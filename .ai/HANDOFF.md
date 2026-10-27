@@ -2,7 +2,7 @@
 
 ## Resume block (read first)
 
-- Repo state: branch `main`, HEAD `d0063ed` plus this fix commit, working tree clean, remote `origin` = `https://github.com/crilsen/get-vmware-fusion-sh` (**public**).
+- Repo state: branch `main`, working tree clean (use `git log -1 --oneline` for the current HEAD), remote `origin` = `https://github.com/crilsen/get-vmware-fusion-sh` (**public**).
 - Source of truth: `AGENTS.md` → `.ai/`
 - Budget / usage observed: unknown (the harness exposes no remaining-quota figure).
 - Checkpoint updated: `2026-10-27 16:40`
@@ -41,7 +41,7 @@ Give this repository an accurate context layer, an evidence-based review of `get
 - `.ai/TASKS.md` — completed work, license/visibility item added, git item closed.
 - `.ai/TOOLS.md` — deletion policy reworded now that history exists.
 - `get-vmwarefusion.sh` — shebang moved to line 1 (prose deleted), mode `0400` → `0755`, `-h`/`exit 0` added, unknown flags `exit 1`. No other behaviour touched.
-- `README.md` — status block, invocation examples (`./` instead of `bash`), `-h` row, "cannot run" issue marked fixed.
+- `README.md` — status block, invocation examples (`./` instead of `bash`), `-h` row, "cannot run" issue marked fixed, and a new *If you get `permission denied`* subsection with the `chmod +x` fix plus a symptom/cause table (`chmod`, `sh` fallback, `curl 416`).
 - `.ai/PROJECT.md`, `.ai/TASKS.md`, `.ai/VALIDATION.md`, `.ai/ARCHITECTURE.md`, `.ai/TOOLS.md` — line references re-synced, runnability marked fixed.
 - `.ai/HANDOFF.md` — this checkpoint.
 

@@ -37,6 +37,29 @@ Invoking it as `bash get-vmwarefusion.sh …` also works; `sh get-vmwarefusion.s
 
 `-t` is named "test" but performs a real installation. There is no `--version` or dry-run mode yet; unknown flags print the usage block and exit `1`.
 
+### If you get `permission denied`
+
+```text
+zsh: permission denied: ./get-vmwarefusion.sh
+```
+
+The file is missing its execute bit. A `git clone` keeps it (`100755` in the index), but copies made by download, `zip`, AirDrop, or some sync clients drop the mode. Fix it once:
+
+```bash
+chmod +x get-vmwarefusion.sh
+```
+
+`chmod 755` is equivalent. Then run it as `./get-vmwarefusion.sh` — or skip the mode entirely with `bash get-vmwarefusion.sh`, which never needs the execute bit.
+
+Other symptoms and their cause:
+
+| Error | Cause | Fix |
+| --- | --- | --- |
+| `permission denied` | No execute bit | `chmod +x get-vmwarefusion.sh` |
+| `Direct: command not found` (old copies only) | A line of prose sat above the shebang, so `sh` was used as fallback | Update to a current checkout — fixed in `3f2edf6` |
+| `syntax error near unexpected token '<'` | Ran through `sh` or `dash` | Use `./get-vmwarefusion.sh` or `bash get-vmwarefusion.sh` |
+| `curl: (33) … 416` (older copies) | Resuming an already-complete file | Delete the partial `.dmg` in `~/Downloads` and run again |
+
 ## How the version is chosen
 
 1. `GET https://archive.org/download/vmwareworkstationarchive/Fusion/` and collect the major-version folders (`8.x`, `10.x`, `11.x`, `12.x`, `13.x`, `25H2`, `26H1` as of 2026-10-27).
