@@ -1,0 +1,9 @@
+# macOS noise
+.DS_Store
+
+# Local downloads — the script writes to ~/Downloads, but never commit a disk image
+*.dmg
+
+# Local environment
+.env
+.env.*
