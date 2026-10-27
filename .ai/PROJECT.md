@@ -12,8 +12,8 @@
 
 - Repository contents: `AGENTS.md`, `README.md`, `.ai/` (this context layer), `.gitignore`, `get-vmwarefusion.sh`, and macOS `.DS_Store` artifacts (ignored by git). No `docs/`, tests, CI/CD, IaC, or packaging.
 - Git repository on branch `main`, remote `origin` = `https://github.com/crilsen/get-vmware-fusion-sh` (**public** since 2026-10-27), created from the working tree on the same day. The repository was initially `get-vmwarefusion` and private; renamed and published by the owner, who accepted the licence-key trade-off recorded in `.ai/HANDOFF.md`. Conventional Commits are used for subjects (`chore:`, `docs:`, `feat:`, `fix:`), matching the owner's other repositories.
-- `get-vmwarefusion.sh`: 641 lines, 18,883 bytes, mode `0400` (owner read-only, not executable).
-- Language: Bash. The shebang is `#!/usr/bin/env bash` on **line 3**, preceded by a line of prose on line 1.
+- `get-vmwarefusion.sh`: 642 lines, 18,886 bytes, mode `0755` (directly executable), shebang `#!/usr/bin/env bash` on line 1.
+- Language: Bash, invoked directly (`./get-vmwarefusion.sh`). `sh get-vmwarefusion.sh` fails at parse time; `bash get-vmwarefusion.sh` also works.
 - The only `bash` on the current machine is `/bin/bash` 3.2.57; `sort -V` (GNU) is absent. Anything added must stay Bash 3.2 / BSD-userland compatible.
 - Runtime platform observed: macOS 26.2 (build 25C56), arm64.
 - Install support is macOS-only; the download path is platform-agnostic.
@@ -36,12 +36,12 @@ No `-h`, `--help`, `--version`, `--dry-run`, version selection, or download-dire
 
 Ordered by impact; details and line references in `.ai/TASKS.md`.
 
-1. **Blocking:** prose on line 1 displaces the shebang, and the file lacks the execute bit. Direct execution fails; fallback to `sh` breaks on Bash-only syntax. `bash -n` passes, so syntax checks do not catch it.
+1. **Runnability:** fixed 2026-10-27 — the shebang is on line 1, the file is `0755`, and `-h` prints usage and exits `0`. Previously the prose on line 1 displaced the shebang and the file was `0400`, so direct execution failed (`exit 126`) and `sh` fallback broke on Bash-only syntax. `bash -n` passed even then, so syntax checks never caught it.
 2. **Security:** DMGs come from a third-party archive mirror with no signature, hash, or size verification, while `xattr` strips `com.apple.quarantine` from the DMG and the installed app.
 3. **Data loss risk:** the existing `/Applications/VMware Fusion.app` is deleted before the new copy succeeds; no staging, backup, or rollback.
 4. **Logic:** possible permanent update loop when the bundle version omits the `uN` suffix that the archive filename carries (e.g. `26H1u1` vs `26H1`).
 5. **Correctness:** a truncated DMG left by a failed download is reused and installed on the next run; no size or checksum check.
-6. **Legal:** the success path advertises a GitHub repository of VMware license keys.
+6. **Legal:** the success path advertises a GitHub repository of VMware license keys. The repository is now public, so this is the most visible outstanding issue.
 
 ## Not applicable
 

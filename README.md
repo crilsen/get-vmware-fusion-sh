@@ -4,7 +4,7 @@ Direct download, install, and update of **VMware Fusion** on macOS from the comm
 
 It finds the newest build available in the mirror, compares it against what is installed, downloads it to `~/Downloads`, and — optionally — replaces the app in `/Applications`.
 
-> **Status: broken as committed.** The script cannot run in its current state (line 1 before the shebang, file mode `0400`). See [Known issues](#known-issues). Until the first fixes land, invoke it as `bash get-vmwarefusion.sh`, never as `./get-vmwarefusion.sh`.
+> **Status: usable, but not safe to install with.** The script now runs directly (`./get-vmwarefusion.sh`), but the install path still deletes `/Applications/VMware Fusion.app` before copying the new build and removes the Gatekeeper quarantine flag. Read [Known issues](#known-issues) before using `-i`.
 
 ## Requirements
 
@@ -16,12 +16,15 @@ It finds the newest build available in the mirror, compares it against what is i
 ## Usage
 
 ```bash
-bash get-vmwarefusion.sh                 # find latest, ask, download to ~/Downloads
-bash get-vmwarefusion.sh -i              # download + install/update, no prompts
-bash get-vmwarefusion.sh -i -f           # force reinstall even if already current
-bash get-vmwarefusion.sh -d              # download only, even if -i is given
-bash get-vmwarefusion.sh -t ~/Downloads/VMware-Fusion-26H1u1-25689522_universal.dmg
+./get-vmwarefusion.sh                    # find latest, ask, download to ~/Downloads
+./get-vmwarefusion.sh -i                 # download + install/update, no prompts
+./get-vmwarefusion.sh -i -f              # force reinstall even if already current
+./get-vmwarefusion.sh -d                 # download only, even if -i is given
+./get-vmwarefusion.sh -h                 # usage
+./get-vmwarefusion.sh -t ~/Downloads/VMware-Fusion-26H1u1-25689522_universal.dmg
 ```
+
+Invoking it as `bash get-vmwarefusion.sh …` also works; `sh get-vmwarefusion.sh` does **not** (the script uses Bash-only constructs and will fail at parse time).
 
 | Flag | Meaning |
 | --- | --- |
@@ -30,8 +33,9 @@ bash get-vmwarefusion.sh -t ~/Downloads/VMware-Fusion-26H1u1-25689522_universal.
 | `-d` | Download only; wins over `-i` |
 | `-f` | Force install even when the same version is installed |
 | `-t <dmg>` | Install an existing local DMG, skipping discovery and download |
+| `-h` | Print usage and exit `0` |
 
-`-t` is named "test" but performs a real installation. There is no `-h`/`--help`, `--version`, or dry-run mode yet; unknown flags print the usage block and exit `1`.
+`-t` is named "test" but performs a real installation. There is no `--version` or dry-run mode yet; unknown flags print the usage block and exit `1`.
 
 ## How the version is chosen
 
@@ -64,7 +68,7 @@ The DMG is mounted read-write for the duration of the install, the `.app` is cop
 
 Documented in detail, with line references and an ordered remediation plan, in [`.ai/TASKS.md`](.ai/TASKS.md).
 
-- **Cannot run:** the shebang is on line 3, displaced by a line of prose, and the file is not executable.
+- **Cannot run:** ~~the shebang was displaced by a line of prose and the file was not executable~~ — fixed 2026-10-27; the shebang is on line 1 and the file is `0755`.
 - **Install is destructive before it is safe:** `/Applications/VMware Fusion.app` is removed *before* the new copy is attempted, with no staging, backup, or rollback.
 - **No payload verification:** the DMG is fetched from a third-party mirror without signature, hash, or size check, and `com.apple.quarantine` is stripped from both the DMG and the installed app — that removes Gatekeeper from the equation.
 - **Possible reinstall loop:** the archive names builds `26H1u1` while the app bundle may report `26H1`; if so, the version comparison never converges and every run triggers an "update".

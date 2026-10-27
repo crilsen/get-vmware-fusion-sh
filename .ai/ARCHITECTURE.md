@@ -2,7 +2,7 @@
 
 ## Shape
 
-A single-file Bash program invoked as `bash get-vmwarefusion.sh [flags]`. No modules, no sourced files, no compiled artifacts. State is a plain text file; all knowledge of "latest" is derived on every run by scraping HTML.
+A single-file Bash program invoked as `./get-vmwarefusion.sh [flags]` (or `bash get-vmwarefusion.sh [flags]`). No modules, no sourced files, no compiled artifacts. State is a plain text file; all knowledge of "latest" is derived on every run by scraping HTML.
 
 ```text
 argv ──► getopts ──► requirements_check

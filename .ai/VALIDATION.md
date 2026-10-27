@@ -8,14 +8,14 @@ Before completion, run every applicable check below and report each as **Validat
 
 No test suite, linter configuration, or CI exists. The checks that do exist, in order of cost:
 
-### 1. Shebang and mode (cheap, catches the current blocking defect)
+### 1. Shebang and mode (cheap; both currently pass)
 
 ```bash
 head -1 get-vmwarefusion.sh          # must be the shebang, not prose
 ls -l get-vmwarefusion.sh            # must be executable for direct use
 ```
 
-`bash -n` does **not** catch a displaced shebang; line 1 is a syntactically valid simple command.
+`bash -n` does **not** catch a displaced shebang; line 1 is a syntactically valid simple command. This is why the original defect survived a syntax check. Fixed 2026-10-27 — keep both checks green.
 
 ### 2. Bash syntax
 
@@ -23,7 +23,7 @@ ls -l get-vmwarefusion.sh            # must be executable for direct use
 bash -n get-vmwarefusion.sh
 ```
 
-Expected: silent success. `sh -n get-vmwarefusion.sh` intentionally **fails** on the process substitution at line 182 — that is the signal that the script is Bash-only and must never be executed through `sh`.
+Expected: silent success. `sh -n get-vmwarefusion.sh` intentionally **fails** on the process substitution at line 183 — that is the signal that the script is Bash-only and must never be executed through `sh`.
 
 ### 3. Static analysis
 
@@ -31,15 +31,16 @@ Expected: silent success. `sh -n get-vmwarefusion.sh` intentionally **fails** on
 shellcheck -S warning get-vmwarefusion.sh
 ```
 
-ShellCheck 0.11.0 is installed. Known baseline at adoption (2026-10-27): `SC2148` (error, missing shebang on line 1), `SC2034` twice (`SORT_CMD`, `SORT_UNIQUE_CMD` unused), `SC2010` (`ls /Volumes | grep`). Any **new** finding is a regression.
+ShellCheck 0.11.0 is installed. Baseline at 2026-10-27 after the shebang fix: `SC2034` twice (`SORT_CMD`, `SORT_UNIQUE_CMD` unused, lines 76–77) and `SC2010` (`ls /Volumes | grep`, line 381). `SC2148` (missing shebang) is resolved. Any **new** finding is a regression.
 
 ### 4. CLI smoke test (no network, no install)
 
 ```bash
-bash get-vmwarefusion.sh -h    # currently prints "Direct: command not found", then usage, exit 1
+./get-vmwarefusion.sh -h     # usage, exit 0
+./get-vmwarefusion.sh -z     # usage, exit 1
 ```
 
-After the shebang fix, this must print usage with exit `0` and no stray error.
+Both must print the usage block with `$0` in the examples and no stray error from line 1.
 
 ### 5. Version logic (offline, pure functions)
 

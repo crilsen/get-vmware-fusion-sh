@@ -16,7 +16,7 @@ The rules behind these lists live in `.ai/GUARDRAILS.md`.
 
 - Read and search repository files.
 - `bash -n get-vmwarefusion.sh`, `shellcheck -S warning get-vmwarefusion.sh`.
-- `bash get-vmwarefusion.sh -h` (help path only).
+- `./get-vmwarefusion.sh -h` (usage path only, exits `0`).
 - Read-only inspection: `defaults read` on an installed bundle, `hdiutil info`, `ls -l`, `git status` once the repo exists.
 - Public, read-only HTTP GETs of `archive.org` listing pages to verify the scraper contract.
 - Scoped edits to `get-vmwarefusion.sh` and `.ai/` context files.

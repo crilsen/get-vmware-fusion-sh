@@ -2,19 +2,19 @@
 
 ## Active
 
-- None. Context adoption is complete; the script analysis was delivered on 2026-10-27 and no code change has been started or authorized yet.
+- None. The script is runnable again; the remaining P0 items (payload verification and atomic install) are still unauthorized.
 
 ## Planned
 
-Remediation for `get-vmwarefusion.sh`, in the order agreed as safe to batch. Line references are from the 2026-10-27 snapshot of the file.
+Remediation for `get-vmwarefusion.sh`. Line references are from the 2026-10-27 HEAD snapshot (642 lines); re-check them if the file changes again.
 
-1. **P0 — make it runnable.** Delete the prose on line 1, move `#!/usr/bin/env bash` to line 1, `chmod 755`, add `set -euo pipefail`, add `-h/--help` returning `0`, and stop `getopts` from printing `illegal option`.
-2. **P0 — stop de-fanging Gatekeeper.** Remove `xattr` at lines 433 and 606; add `codesign --verify --deep --strict` + `spctl --assess --type execute` on the mounted bundle before anything else happens.
-3. **P0 — remove the data-loss window.** Replace `rm -rf` (line 416) + `cp -R` (line 425) with a staged copy plus an atomic `mv` swap, keep a rollback path, abort if VMware Fusion is running, and check free space.
-4. **P1 — fix update detection.** Decide by build number first; confirm whether `CFBundleShortVersionString` carries the `uN` suffix before changing the comparison at lines 275–287.
-5. **P1 — reject bad artifacts.** Validate DMG size (compare against `Content-Length`) before install; treat `HTTP 416` from `curl -C -` as "already complete"; delete or quarantine partial files; prefer `--speed-limit`/`--speed-time` over `--max-time 300` (line 311).
-6. **P1 — remove the piracy link.** Replace `show_license_info` (lines 462–465) and the duplicated literal at line 502 with the official Broadcom download page; the Free Personal Use entitlement makes key lists unnecessary.
-7. **P2 — robustness.** Replace the three `hdiutil` output heuristics (lines 367–384) with `-mountpoint` on a `mktemp -d`; add `trap 'hdiutil detach …' EXIT INT TERM`; extend `requirements_check` to `find basename defaults xattr`; drop `setup_sort`/`SORT_CMD`/`SORT_UNIQUE_CMD` (dead code, lines 70–78); declare `local entry` (line 193); remove the debug dump at lines 362–364; move the state file out of `~/.local/.` to `~/Library/Application Support/`.
+1. ~~**P0 — make it runnable.**~~ **Done 2026-10-27:** prose removed from line 1, shebang now on line 1, mode `0755`, `-h` added (usage exits `0`, unknown flag exits `1`). `set -euo pipefail` is still **pending** and belongs with item 3, since enabling it changes every error path.
+2. **P0 — stop de-fanging Gatekeeper.** Remove `xattr` at line 434 (installed app) and line 607 (DMG); add `codesign --verify --deep --strict` + `spctl --assess --type execute` on the mounted bundle (line 401, where the app is located) before anything else happens.
+3. **P0 — remove the data-loss window.** Replace `rm -rf` (line 417) + `cp -R` (line 426) with a staged copy plus an atomic `mv` swap, keep a rollback path, abort if VMware Fusion is running, and check free space. Add `set -euo pipefail` and a `trap` in the same change.
+4. **P1 — fix update detection.** Decide by build number first; confirm whether `CFBundleShortVersionString` carries the `uN` suffix before changing the comparison at lines 276–288.
+5. **P1 — reject bad artifacts.** Validate DMG size (compare against `Content-Length`) before install; treat `HTTP 416` from `curl -C -` as "already complete"; delete or quarantine partial files; prefer `--speed-limit`/`--speed-time` over `--max-time 300` (line 312).
+6. **P1 — remove the piracy link.** Replace `show_license_info` (lines 463–466) and the duplicated literal at line 503 with the official Broadcom download page; the Free Personal Use entitlement makes key lists unnecessary. This is now the most visible issue in a public repository.
+7. **P2 — robustness.** Replace the three `hdiutil` output heuristics (lines 366–383) with `-mountpoint` on a `mktemp -d`; add `trap 'hdiutil detach …' EXIT INT TERM`; extend `requirements_check` to `find basename defaults xattr`; drop `setup_sort`/`SORT_CMD`/`SORT_UNIQUE_CMD` (dead code, lines 69–77); declare `local entry` (line 194); remove the debug dump at lines 361–363; move the state file out of `~/.local/.` to `~/Library/Application Support/`.
 
 ### Separate, optional
 
@@ -34,3 +34,4 @@ Remediation for `get-vmwarefusion.sh`, in the order agreed as safe to batch. Lin
 - 2026-10-27 — Adopted the context layer: `PROJECT.md`, `ARCHITECTURE.md`, `CONVENTIONS.md`, `VALIDATION.md`, `TOOLS.md`, `TASKS.md`, `HANDOFF.md`, `LEARNINGS.md` populated from observed facts.
 - 2026-10-27 — Wrote `README.md` (usage, flag table, version-selection logic, touched paths, known issues, security notes, credits) and `.gitignore` (`.DS_Store`, `*.dmg`, `.env*`).
 - 2026-10-27 — `git init` on `main`; two commits (script + context layer, then README); repository renamed `get-vmware-fusion-sh`, made public, and pushed to `https://github.com/crilsen/get-vmware-fusion-sh`.
+- 2026-10-27 — Made the script runnable: removed the prose from line 1 (shebang now line 1), `chmod 755`, added `-h` (exit `0`) and explicit `exit 1` for unknown flags. Validated with `bash -n`, `shellcheck`, `./get-vmwarefusion.sh -h` and `-z`.

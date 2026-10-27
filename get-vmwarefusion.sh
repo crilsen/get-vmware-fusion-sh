@@ -1,5 +1,3 @@
-Direct Download VMWare Fusion - Download, Install, and Update VMWare Fusion Automatically.
-
 #!/usr/bin/env bash
 
 # VMware Fusion Latest Version Downloader, Installer, and Updater
@@ -23,29 +21,32 @@ TEST_DMG=""
 VERSION_FILE="${HOME}/.local/.vmwarefusion_last_version"
 
 usage() {
-  echo "Usage: $0 [-y] [-i] [-d] [-f] [-t <dmg_path>]"
+  local exit_code="${1:-1}"
+  echo "Usage: $0 [-y] [-i] [-d] [-f] [-t <dmg_path>] [-h]"
   echo "  -y: Skip download confirmation prompt"
   echo "  -i: Automatically install after download (implies -y)"
   echo "  -d: Download only (skip installation even if -i is specified)"
   echo "  -f: Force update even if same version is installed"
   echo "  -t: Test installation with existing DMG file (skips download)"
+  echo "  -h: Show this help"
   echo ""
   echo "Examples:"
   echo "  $0              # Interactive download"
   echo "  $0 -i           # Auto download + install (or update if newer)"
   echo "  $0 -i -f        # Force install even if same version"
   echo "  $0 -t ~/Downloads/VMware-Fusion-13.6.4.dmg  # Test install existing DMG"
-  exit 1
+  exit "$exit_code"
 }
 
-while getopts "yidft:" opt; do
+while getopts "yidft:h" opt; do
   case $opt in
     y) SKIP_CONFIRMATION=true ;;
     i) AUTO_INSTALL=true; SKIP_CONFIRMATION=true ;;
     d) DOWNLOAD_ONLY=true ;;
     f) FORCE_UPDATE=true ;;
     t) TEST_DMG="$OPTARG"; AUTO_INSTALL=true; SKIP_CONFIRMATION=true ;;
-    *) usage ;;
+    h) usage 0 ;;
+    *) usage 1 ;;
   esac
 done
 
