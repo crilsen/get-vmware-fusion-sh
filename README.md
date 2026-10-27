@@ -1,6 +1,6 @@
 # get-vmwarefusion
 
-Download, install, and update **VMware Fusion** on macOS from the command line, using the Internet Archive mirror of the Broadcom/VMware installers.
+Direct download, install, and update of **VMware Fusion** on macOS from the command line, using the Internet Archive mirror of the Broadcom/VMware installers — no browser, no login, no hunting for the latest build.
 
 It finds the newest build available in the mirror, compares it against what is installed, downloads it to `~/Downloads`, and — optionally — replaces the app in `/Applications`.
 

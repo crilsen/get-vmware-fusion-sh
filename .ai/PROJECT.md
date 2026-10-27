@@ -2,7 +2,7 @@
 
 ## Identity
 
-- **Name:** get-vmwarefusion (repository directory name; not a published package).
+- **Name:** repository `get-vmware-fusion-sh` (formerly `get-vmwarefusion`); the tool itself is `get-vmwarefusion.sh`. Not a published package. The local working directory is still `get-vmwarefusion`.
 - **Deliverable:** a single Bash script, `get-vmwarefusion.sh`.
 - **Objective:** find the newest VMware Fusion build mirrored on archive.org, download it to `~/Downloads`, and optionally install or replace it in `/Applications`.
 - **Status:** working utility in use, but currently broken as shipped (see Known defects). No version tag, no changelog, no git repository.
@@ -11,7 +11,7 @@
 ## Observed
 
 - Repository contents: `AGENTS.md`, `README.md`, `.ai/` (this context layer), `.gitignore`, `get-vmwarefusion.sh`, and macOS `.DS_Store` artifacts (ignored by git). No `docs/`, tests, CI/CD, IaC, or packaging.
-- Git repository on branch `main`, remote `origin` = `https://github.com/crilsen/get-vmwarefusion` (**private**), created 2026-10-27 from the working tree. Conventional Commits are used for subjects (`chore:`, `docs:`, `feat:`, `fix:`), matching the owner's other repositories.
+- Git repository on branch `main`, remote `origin` = `https://github.com/crilsen/get-vmware-fusion-sh` (**public** since 2026-10-27), created from the working tree on the same day. The repository was initially `get-vmwarefusion` and private; renamed and published by the owner, who accepted the licence-key trade-off recorded in `.ai/HANDOFF.md`. Conventional Commits are used for subjects (`chore:`, `docs:`, `feat:`, `fix:`), matching the owner's other repositories.
 - `get-vmwarefusion.sh`: 641 lines, 18,883 bytes, mode `0400` (owner read-only, not executable).
 - Language: Bash. The shebang is `#!/usr/bin/env bash` on **line 3**, preceded by a line of prose on line 1.
 - The only `bash` on the current machine is `/bin/bash` 3.2.57; `sort -V` (GNU) is absent. Anything added must stay Bash 3.2 / BSD-userland compatible.

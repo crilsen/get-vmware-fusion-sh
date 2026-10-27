@@ -18,10 +18,10 @@ Remediation for `get-vmwarefusion.sh`, in the order agreed as safe to batch. Lin
 
 ### Separate, optional
 
-8. ~~Introduce git for this repository~~ — done 2026-10-27 (initial commit, private remote `crilsen/get-vmwarefusion`).
+8. ~~Introduce git for this repository~~ — done 2026-10-27 (initial commit, remote `crilsen/get-vmware-fusion-sh`, public).
 9. Add a `shellcheck` baseline to the repository once the script is fixed; `README.md` is done.
 10. Consider an official-source path (Broadcom portal or the `vmware-fusion` Homebrew cask, which verifies the vendor signature) alongside, or instead of, the archive.org mirror.
-11. Decide the repository license (none declared yet; `README.md` states this explicitly) and whether the repository should become public — both wait on item 6 of the P1 list, because the licence-key URL is currently advertised in the script output.
+11. Decide the repository license (none declared yet; `README.md` states this explicitly). The visibility question is closed: the owner published the repository on 2026-10-27 despite the licence-key URL, which stays open as P1 item 6.
 
 ## Blocked
 
@@ -33,4 +33,4 @@ Remediation for `get-vmwarefusion.sh`, in the order agreed as safe to batch. Lin
 - 2026-10-27 — Read the repository and analyzed `get-vmwarefusion.sh` (line-level review, 10 findings by severity).
 - 2026-10-27 — Adopted the context layer: `PROJECT.md`, `ARCHITECTURE.md`, `CONVENTIONS.md`, `VALIDATION.md`, `TOOLS.md`, `TASKS.md`, `HANDOFF.md`, `LEARNINGS.md` populated from observed facts.
 - 2026-10-27 — Wrote `README.md` (usage, flag table, version-selection logic, touched paths, known issues, security notes, credits) and `.gitignore` (`.DS_Store`, `*.dmg`, `.env*`).
-- 2026-10-27 — `git init` on `main`; two commits (script + context layer, then README); pushed to the private remote `https://github.com/crilsen/get-vmwarefusion`.
+- 2026-10-27 — `git init` on `main`; two commits (script + context layer, then README); repository renamed `get-vmware-fusion-sh`, made public, and pushed to `https://github.com/crilsen/get-vmware-fusion-sh`.

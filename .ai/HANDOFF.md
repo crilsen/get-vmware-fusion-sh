@@ -2,7 +2,7 @@
 
 ## Resume block (read first)
 
-- Repo state: branch `main`, HEAD `c4ce67b` (will advance by one commit after this checkpoint), working tree clean, remote `origin` = `https://github.com/crilsen/get-vmwarefusion` (private, pushed).
+- Repo state: branch `main`, HEAD `2191e02` plus this checkpoint commit, working tree clean, remote `origin` = `https://github.com/crilsen/get-vmware-fusion-sh` (**public**).
 - Source of truth: `AGENTS.md` → `.ai/`
 - Budget / usage observed: unknown (the harness exposes no remaining-quota figure).
 - Checkpoint updated: `2026-10-27 16:40`
@@ -19,7 +19,7 @@ Give this repository an accurate context layer, an evidence-based review of `get
 
 ## Current State
 
-- Context layer complete; README, `.gitignore` and git history in place; pushed to a **private** GitHub repository.
+- Context layer complete; README, `.gitignore` and git history in place; pushed to the **public** GitHub repository `crilsen/get-vmware-fusion-sh`.
 - `get-vmwarefusion.sh` is byte-for-byte unchanged (`sha256 1bafe5b6…172f`, mode `0400`, prose still on line 1). No code change has been authorized.
 - The README documents the current defects openly and tells the reader to invoke the script as `bash get-vmwarefusion.sh`.
 
@@ -29,7 +29,8 @@ Give this repository an accurate context layer, an evidence-based review of `get
 - Analyzed the script: 10 findings ranked by severity, with line references, recorded in `.ai/TASKS.md`.
 - Wrote `README.md`: purpose, requirements, usage and flag table, version-selection algorithm with the normalization table, paths touched, known issues, security notes, repository layout, **credits** (jetfir3's gist, the Internet Archive collection, Broadcom trademark notice, author), and an explicit "no license declared" note.
 - Wrote `.gitignore` (`.DS_Store`, `*.dmg`, `.env*`) so macOS artifacts and disk images never enter history.
-- `git init -b main`, local identity `Cristiano Nilsen <cristiano@nilsen.com.br>` (the global `user.name` is empty, so it is set per-repository), two Conventional Commits, then `gh repo create --private --source=. --push`.
+- `git init -b main`, local identity `Cristiano Nilsen <cristiano@nilsen.com.br>` (the global `user.name` is empty, so it is set per-repository), two Conventional Commits, then `gh repo create --source=. --push`.
+- Published: repository renamed `get-vmwarefusion` → `get-vmware-fusion-sh`, switched to **public**, and `origin` repointed to the canonical URL (owner decision). GitHub description set to emphasise a direct download.
 
 ## Files Changed
 
@@ -43,8 +44,8 @@ Give this repository an accurate context layer, an evidence-based review of `get
 
 ## Decisions Made
 
-- **Private repository.** The script still prints a third-party VMware licence-key URL, and the payload path has no signature verification. Publishing that publicly before P1 item 6 is fixed would amplify both problems. Flipping to public is one command once the link is gone.
-- **No license file.** Choosing a license is the owner's legal decision, not a default to assume; the README states that all rights are reserved until one is added.
+- **Public, renamed repository — owner decision 2026-10-27.** I had created it private because the script still prints a third-party VMware licence-key URL and the payload path has no signature verification. The owner renamed it to `get-vmware-fusion-sh` and published it, accepting that trade-off. The consequence: the licence URL and the missing signature check are now disclosed in the README rather than contained. `origin` was repointed to `https://github.com/crilsen/get-vmware-fusion-sh.git`; GitHub still redirects the old name.
+- No license file. Choosing a license is the owner's legal decision, not a default to assume; the README states that all rights are reserved until one is added.
 - Kept the unused infra workflows in `.ai/workflows/`, now with the initial commit as the recovery point.
 - README is the human entry point and `.ai/` the agent entry point; the README links into `.ai/TASKS.md` instead of duplicating the whole remediation plan.
 
@@ -54,7 +55,7 @@ Give this repository an accurate context layer, an evidence-based review of `get
 - Install path deletes `/Applications/VMware Fusion.app` before copying; a failure leaves the user with no installation.
 - Unverified third-party mirror plus quarantine removal is a supply-chain execution path.
 - Possible permanent reinstall loop if the bundle version omits the `uN` suffix.
-- The licence-key URL is now documented in the README as a known issue, which is the honest state but also the reason the repository stays private.
+- The licence-key URL is now shipped in a **public** repository, both in the script output and as a documented known issue.
 
 ## Validation Performed
 
@@ -71,5 +72,5 @@ Give this repository an accurate context layer, an evidence-based review of `get
 
 1. Owner approves (or trims) P0 items 1–3; then produce one small patch and re-run the checks in `.ai/VALIDATION.md`.
 2. Resolve the `uN` question by reading `CFBundleShortVersionString` on a 26H1u1 install before touching update detection.
-3. Remove the licence-key URL (P1 item 6); then decide on making the repository public and on adding a license.
+3. Remove the licence-key URL (P1 item 6) — the only outstanding exposure left in a public repository — and decide whether to add a license.
 4. Decide the long-term source: `archive.org` mirror with verification, the Broadcom portal, or the Homebrew cask.
