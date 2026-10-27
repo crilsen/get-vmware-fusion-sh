@@ -10,8 +10,8 @@
 
 ## Observed
 
-- Repository contents: `AGENTS.md`, `.ai/` (this context layer), `get-vmwarefusion.sh`, and macOS `.DS_Store` artifacts. Nothing else — no `README.md`, no `docs/`, no tests, no CI/CD, no IaC, no packaging.
-- Not a git repository (`git rev-parse` fails); there is no history, branch, or remote. Context changes cannot be diffed or rolled back.
+- Repository contents: `AGENTS.md`, `README.md`, `.ai/` (this context layer), `.gitignore`, `get-vmwarefusion.sh`, and macOS `.DS_Store` artifacts (ignored by git). No `docs/`, tests, CI/CD, IaC, or packaging.
+- Git repository on branch `main`, remote `origin` = `https://github.com/crilsen/get-vmwarefusion` (**private**), created 2026-10-27 from the working tree. Conventional Commits are used for subjects (`chore:`, `docs:`, `feat:`, `fix:`), matching the owner's other repositories.
 - `get-vmwarefusion.sh`: 641 lines, 18,883 bytes, mode `0400` (owner read-only, not executable).
 - Language: Bash. The shebang is `#!/usr/bin/env bash` on **line 3**, preceded by a line of prose on line 1.
 - The only `bash` on the current machine is `/bin/bash` 3.2.57; `sort -V` (GNU) is absent. Anything added must stay Bash 3.2 / BSD-userland compatible.
@@ -45,7 +45,7 @@ Ordered by impact; details and line references in `.ai/TASKS.md`.
 
 ## Not applicable
 
-The optional infrastructure workflows shipped with the template (`terraform-change`, `kubernetes-change`, `cloud-port`) do not apply: no Terraform/OpenTofu, Kubernetes, Helm, or cloud provider is used. They are left in `.ai/workflows/` unused rather than deleted, because the repository has no git history to recover them from.
+The optional infrastructure workflows shipped with the template (`terraform-change`, `kubernetes-change`, `cloud-port`) do not apply: no Terraform/OpenTofu, Kubernetes, Helm, or cloud provider is used. They are left in `.ai/workflows/` unused rather than deleted; the initial commit is the recovery point if they are ever removed.
 
 ## Not determinable from the repository
 

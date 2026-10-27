@@ -28,7 +28,7 @@ The rules behind these lists live in `.ai/GUARDRAILS.md`.
 - `xattr -d`/`-dr` on any downloaded file or installed app.
 - Downloading multi-hundred-megabyte DMGs (bandwidth), or changing the download directory.
 - Adding a new download mirror, or pointing the script at anything other than the recorded `archive.org` path.
-- Deleting files in `.ai/` (notably the unused infra workflows) — this repository has no git history to recover them from.
+- Deleting files in `.ai/` (notably the unused infra workflows) — history exists only from the initial commit of 2026-10-27, so treat deletions as permanent and confirm first.
 
 ## Network egress
 
